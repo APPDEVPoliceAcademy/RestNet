@@ -34,6 +34,26 @@ namespace RestNet.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [Route("api/workshops/{id}")]
+        public IHttpActionResult AddSingleUser([FromUri] int id)
+        {
+            var user = (System.Security.Claims.ClaimsIdentity)User.Identity;
+            var userId = Int32.Parse(user.FindFirstValue("UserId"));
+
+
+            var userObject = db.Users.First(user1 => user1.ID == userId);
+            var selectedWorkshop = db.Workshops.First(workshop => workshop.Id == id);
+
+            selectedWorkshop.Users.Add(userObject);
+            userObject.Workshops.Add(selectedWorkshop);
+
+            var updated = db.SaveChanges();
+            if (updated == 0) return BadRequest("Couldn't save new info to database");
+            return Ok();
+        }
+
+        [Authorize]
         [HttpGet]
         [Route("api/workshops/me")]
         public IHttpActionResult GetForSingleUser()
@@ -41,7 +61,8 @@ namespace RestNet.Controllers
             var _user = (System.Security.Claims.ClaimsIdentity)User.Identity;
             var id = Int32.Parse(_user.FindFirstValue("UserId"));
 
-            var workshops =  db.Workshops.Where(workshop => workshop.Users.Any(user => user.ID == id) == true).Select( workshop => new WorkshopShortDTO()
+
+            var workshops = db.Users.First(user => user.ID == id).Workshops.Select(workshop => new WorkshopShortDTO()
             {
                 Id = workshop.Id,
                 Coach = workshop.Coach,
@@ -49,8 +70,7 @@ namespace RestNet.Controllers
                 ShortDescription = workshop.ShortDescription,
                 Title = workshop.Title,
                 Date = workshop.Date
-            } ).ToList();
-
+            }).ToList();
             if (workshops.Any()) return Ok(workshops);
             else return NotFound();
 
@@ -73,7 +93,7 @@ namespace RestNet.Controllers
                 Description = workshop.Description
             }).ToList();
             if (returnWorkshop.Any()) return Ok(returnWorkshop.First());
-            else return NotFound();
+            return NotFound();
         }
 
 

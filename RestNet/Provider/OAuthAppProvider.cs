@@ -35,7 +35,7 @@ namespace RestNet.Provider
                 }
                 else
                 {
-                    context.SetError("invalid_grant", "Error");
+                    context.SetError("Bad Username or Password", "Error");
                 }
             });
         }

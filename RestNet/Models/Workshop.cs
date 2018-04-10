@@ -14,6 +14,11 @@ namespace RestNet.Models
         public string Coach { get; set; }
         public string Place { get; set; }
         public DateTime Date { get; set; }
-        public ICollection<User> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
+
+        public Workshop()
+        {
+            Users = new List<User>();
+        }
     }
 }

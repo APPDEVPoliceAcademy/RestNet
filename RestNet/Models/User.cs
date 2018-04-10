@@ -11,6 +11,13 @@ namespace RestNet.Models
         user, admin
     }
 
+    public enum Unit
+    {
+        Noord,
+        Soud,
+        Noone
+    }
+
     public class User
     {
         public int ID { get; set; }
@@ -18,7 +25,13 @@ namespace RestNet.Models
         public string Password { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Unit { get; set; }
+        public Unit Unit { get; set; }
         public Rights? Rights { get; set; }
+        public virtual ICollection<Workshop> Workshops { get; set; }
+
+        public User()
+        {
+            Workshops = new List<Workshop>();
+        }
     }
 }

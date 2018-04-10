@@ -39,7 +39,7 @@ namespace RestNet.Controllers
                     Login = credentials.Login,
                     Name = "",
                     Surname = "",
-                    Unit = "",
+                    Unit = Unit.Noone,
                     Password = Encoding.UTF8.GetString(hasher.ComputeHash(passBytes))
                 };
                 db.Users.Add(user);
