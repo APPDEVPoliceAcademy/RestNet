@@ -19,7 +19,7 @@ namespace RestNet
             {
                 TokenEndpointPath = new PathString("/token"),
                 Provider = new OAuthAppProvider(),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(2),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(5),
                 AllowInsecureHttp = true
             };
         }

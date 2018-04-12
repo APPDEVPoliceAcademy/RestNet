@@ -39,7 +39,7 @@ namespace RestNet.Controllers
                     Login = credentials.Login,
                     Name = "",
                     Surname = "",
-                    Unit = Unit.Noone,
+                    Unit = Unit.Nord,
                     Password = Encoding.UTF8.GetString(hasher.ComputeHash(passBytes))
                 };
                 db.Users.Add(user);
@@ -54,7 +54,7 @@ namespace RestNet.Controllers
                 };
 
                 ClaimsIdentity oAutIdentity = new ClaimsIdentity(claims, Startup.OAuthOptions.AuthenticationType);
-                var tokenExpiration = TimeSpan.FromDays(2);
+                var tokenExpiration = TimeSpan.FromMinutes(5);
 
                 var props = new AuthenticationProperties()
                 {

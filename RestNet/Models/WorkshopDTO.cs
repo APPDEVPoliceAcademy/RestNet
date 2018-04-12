@@ -14,5 +14,6 @@ namespace RestNet.Models
         public string Coach { get; set; }
         public string Place { get; set; }
         public DateTime Date { get; set; }
+        public bool IsEnrolled { get; set; }
     }
 }

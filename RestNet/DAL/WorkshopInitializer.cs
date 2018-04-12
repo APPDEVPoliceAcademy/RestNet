@@ -82,7 +82,7 @@ namespace RestNet.DAL
                     Name = "Czesc",
                     Password = Encoding.UTF8.GetString(hasher.ComputeHash(Encoding.UTF8.GetBytes("Grzes"))),
                     Surname = "Janek",
-                    Unit = Unit.Noord,
+                    Unit = Unit.Nord,
                     Rights = Rights.admin
                 }
             };
@@ -92,7 +92,7 @@ namespace RestNet.DAL
             {
                 context.SaveChanges();
 
-            }
+            }   
 
             catch (DbEntityValidationException e)
             {

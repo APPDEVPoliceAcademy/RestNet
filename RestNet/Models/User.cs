@@ -11,12 +11,7 @@ namespace RestNet.Models
         user, admin
     }
 
-    public enum Unit
-    {
-        Noord,
-        Soud,
-        Noone
-    }
+    public enum Unit { Nord, Soud, Oost, Westen };
 
     public class User
     {
