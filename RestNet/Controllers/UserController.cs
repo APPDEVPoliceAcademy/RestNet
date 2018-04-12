@@ -99,7 +99,8 @@ namespace RestNet.Controllers
                 {
                     Name = currentUser.Name,
                     Surname = currentUser.Surname,
-                    Unit = currentUser.Unit
+                    Unit = currentUser.Unit,
+                    Birthday = currentUser.Birthday
                 });
             }
         }

@@ -83,7 +83,9 @@ namespace RestNet.DAL
                     Password = Encoding.UTF8.GetString(hasher.ComputeHash(Encoding.UTF8.GetBytes("Grzes"))),
                     Surname = "Janek",
                     Unit = Unit.Nord,
+                    Birthday = new DateTime(1996, 02, 15),
                     Rights = Rights.admin
+
                 }
             };
 

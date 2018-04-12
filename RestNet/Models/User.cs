@@ -20,6 +20,7 @@ namespace RestNet.Models
         public string Password { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
+        public DateTime Birthday { get; set; }
         public Unit Unit { get; set; }
         public Rights? Rights { get; set; }
         public virtual ICollection<Workshop> Workshops { get; set; }
