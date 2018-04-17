@@ -40,7 +40,8 @@ namespace RestNet.Controllers
                     Name = "",
                     Surname = "",
                     Unit = Unit.Nord,
-                    Password = Encoding.UTF8.GetString(hasher.ComputeHash(passBytes))
+                    Password = Encoding.UTF8.GetString(hasher.ComputeHash(passBytes)),
+                    Birthday = DateTime.Now
                 };
                 db.Users.Add(user);
                 db.SaveChanges();
@@ -54,7 +55,7 @@ namespace RestNet.Controllers
                 };
 
                 ClaimsIdentity oAutIdentity = new ClaimsIdentity(claims, Startup.OAuthOptions.AuthenticationType);
-                var tokenExpiration = TimeSpan.FromMinutes(5);
+                var tokenExpiration = TimeSpan.FromMinutes(3);
 
                 var props = new AuthenticationProperties()
                 {
@@ -122,6 +123,7 @@ namespace RestNet.Controllers
                 currentUser.Name = userData.Name;
                 currentUser.Surname = userData.Surname;
                 currentUser.Unit = userData.Unit;
+                currentUser.Birthday = userData.Birthday;
                 var updated = db.SaveChanges();
                 if (updated == 0) return BadRequest("Couldn't save new info to database");
                 else return Ok();

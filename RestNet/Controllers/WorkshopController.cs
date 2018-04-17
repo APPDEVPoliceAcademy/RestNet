@@ -13,26 +13,7 @@ namespace RestNet.Controllers
     {
         private WorkshopContext db = new WorkshopContext();
 
-        /*
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("api/workshops/all")]
-        public IHttpActionResult GetAll()
-        {
-            var allShort = db.Workshops.Select(workshop => new WorkshopShortDTO()
-            {
-                Coach = workshop.Coach,
-                Id = workshop.Id,
-                Place = workshop.Place,
-                ShortDescription = workshop.ShortDescription,
-                Title = workshop.Title,
-                Date = workshop.Date
-                
-            }).ToList();
-
-            return Ok(allShort);
-        }
-        */
+        
         [Authorize]
         [HttpPost]
         [Route("api/workshops/enroll/{id}")]
@@ -160,8 +141,106 @@ namespace RestNet.Controllers
             
         }
 
+        //==============Admin Part ======================//
 
         
+       [AllowAnonymous]
+       [HttpGet]
+       [Route("api/admin/workshops/all")]
+       public IHttpActionResult GetAllAdmin()
+       {
+           List<Workshop> allWorkshops;
+           try
+           {
+               allWorkshops = db.Workshops.ToList();
+           }
+           catch (Exception ex)
+           {
+               return InternalServerError(ex);
+           }
+           return Ok(allWorkshops);
+       }
+       
+
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        [Route("api/admin/workshops/add")]
+        public IHttpActionResult AddWorkshopAdmin([FromBody] WorkshopEssential workshop)
+        {
+            var newWorkshop = new Workshop()
+            {
+                Coach = workshop.Coach,
+                Date = workshop.Date,
+                Description = workshop.Description,
+                Place = workshop.Place,
+                ShortDescription = workshop.ShortDescription
+            };
+            try
+            {
+                db.Workshops.Add(newWorkshop);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+            return Ok();
+
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpDelete]
+        [Route("api/admin/workshops/delete/{id}")]
+        public IHttpActionResult DeleteWorkshopAdmin([FromUri] int id)
+        {
+            try
+            {
+                var workshop = db.Workshops.FirstOrDefault(workshop1 => workshop1.Id == id);
+                if (workshop == null)
+                {
+                    return NotFound();
+                }
+                db.Workshops.Remove(workshop);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPatch]
+        [Route("api/admin/workshops/update/{id}")]
+        public IHttpActionResult UpdateWorkshopAdmin([FromUri] int id, [FromBody] WorkshopEssential updatedWorkshop)
+        {
+            try
+            {
+                var workshop = db.Workshops.FirstOrDefault(workshop1 => workshop1.Id == id);
+                if (workshop != null)
+                {
+                    workshop.Coach = updatedWorkshop.Coach;
+                    workshop.Date = updatedWorkshop.Date;
+                    workshop.Description = updatedWorkshop.Description;
+                    workshop.ShortDescription = updatedWorkshop.ShortDescription;
+                    workshop.Place = updatedWorkshop.Place;
+                    workshop.Title = updatedWorkshop.Title;
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
 
     }
 
