@@ -16,63 +16,7 @@ namespace RestNet.DAL
             SHA256 hasher = new SHA256Managed();
             const string loremipsum =
                 "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.";
-            var workshops = new List<Workshop>()
-            {
-                new Workshop()
-                {
-                    Title = "PR for beginners",
-                    Description = loremipsum,
-                    Coach = "Andrzej Nowak",
-                    Date = new DateTime(2014, 06, 13),
-                    Place = "Windesheim",
-                    Users = null
-                },
-
-                new Workshop()
-                {
-                    Title = "Team Project",
-                    ShortDescription = "latestTest",
-                    Description = loremipsum,
-                    Date = new DateTime(2019, 06, 21),
-                    Coach = "Tadeusz Sznuk",
-                    Place = "on-line",
-                    Users = null
-                },
-                new Workshop()
-                {
-                    Title = "Team Building",
-                    ShortDescription = "firstAlphabeticalPlace",
-                    Description = loremipsum,
-                    Coach = "Andrzej Norek",
-                    Place = "Apeldorn",
-                    Date = new DateTime(2018, 06, 21),
-                    Users = null             
-                },
-
-                new Workshop()
-                {
-                    Title = "Leadership in practise",
-                    ShortDescription = "lastAlphabeticalPlace",
-                    Description = loremipsum,
-                    Coach = "Andrzej Nowak",
-                    Date = new DateTime(2018, 06, 10),
-                    Place = "Zwolle",
-                    Users = null
-                },
-                new Workshop()
-                {
-                    Title = "Motivation",
-                    ShortDescription = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit",
-                    Description = loremipsum,
-                    Date = new DateTime(2018, 09, 21),
-
-                    Coach = "Andrzej Norek",
-                    Place = "on-line",
-                    Users = null
-                }
-            };
-
-            workshops.ForEach(workshop => context.Workshops.Add(workshop));
+            
 
             var users = new List<User>()
             {
@@ -90,6 +34,71 @@ namespace RestNet.DAL
             };
 
             users.ForEach(user => context.Users.Add(user));
+
+            var workshops = new List<Workshop>()
+            {
+                new Workshop()
+                {
+                    Title = "PR for beginners",
+                    Description = loremipsum,
+                    Coach = "Andrzej Nowak",
+                    Date = new DateTime(2014, 06, 13),
+                    Place = "Windesheim",
+                    Users = null,
+                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh"
+                },
+
+                new Workshop()
+                {
+                    Title = "Team Project",
+                    ShortDescription = "latestTest",
+                    Description = loremipsum,
+                    Date = new DateTime(2019, 06, 21),
+                    Coach = "Tadeusz Sznuk",
+                    Place = "on-line",
+                    Users = null,
+                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh"
+                },
+                new Workshop()
+                {
+                    Title = "Team Building",
+                    ShortDescription = "firstAlphabeticalPlace",
+                    Description = loremipsum,
+                    Coach = "Andrzej Norek",
+                    Place = "Apeldorn",
+                    Date = new DateTime(2018, 06, 21),
+                    Users = null,
+                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh"
+                },
+
+                new Workshop()
+                {
+                    Title = "Leadership in practise",
+                    ShortDescription = "lastAlphabeticalPlace",
+                    Description = loremipsum,
+                    Coach = "Andrzej Nowak",
+                    Date = new DateTime(2018, 06, 10),
+                    Place = "Zwolle",
+                    Users = null,
+                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh"
+                },
+                new Workshop()
+                {
+                    Title = "Motivation",
+                    ShortDescription = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit",
+                    Description = loremipsum,
+                    Date = new DateTime(2018, 09, 21),
+
+                    Coach = "Andrzej Norek",
+                    Place = "on-line",
+                    Users = null,
+                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh"
+                }
+            };
+            workshops.ForEach(workshop => context.Workshops.Add(workshop));
+
+
+
             try
             {
                 context.SaveChanges();

@@ -15,5 +15,7 @@ namespace RestNet.Models
         public string Place { get; set; }
         public DateTime Date { get; set; }
         public bool IsEnrolled { get; set; }
+        public bool IsEvaluated { get; set; }
+        public string EvaluationUri { get; set; }
     }
 }

@@ -55,7 +55,7 @@ namespace RestNet.Controllers
                 };
 
                 ClaimsIdentity oAutIdentity = new ClaimsIdentity(claims, Startup.OAuthOptions.AuthenticationType);
-                var tokenExpiration = TimeSpan.FromMinutes(3);
+                var tokenExpiration = TimeSpan.FromHours(2);
 
                 var props = new AuthenticationProperties()
                 {

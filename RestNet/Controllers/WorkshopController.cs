@@ -35,6 +35,25 @@ namespace RestNet.Controllers
         }
 
         [Authorize]
+        [HttpPut]
+        [Route("api/workshops/evaluate/{id}")]
+        public IHttpActionResult EvaluteSingleUser([FromUri] int id)
+        {
+            var user = (System.Security.Claims.ClaimsIdentity)User.Identity;
+            var userId = Int32.Parse(user.FindFirstValue("UserId"));
+
+
+            var userObject = db.Users.First(user1 => user1.ID == userId);
+            var selectedWorkshop = db.Workshops.First(workshop => workshop.Id == id);
+
+            selectedWorkshop.EvaluatedUsers.Add(userObject);
+
+            var updated = db.SaveChanges();
+            if (updated == 0) return BadRequest("Couldn't save new info to database");
+            return Ok();
+        }
+
+        [Authorize]
         [HttpDelete]
         [Route("api/workshops/disenroll/{id}")]
         public IHttpActionResult RemoveSingleUser([FromUri] int id)
@@ -63,7 +82,7 @@ namespace RestNet.Controllers
             var id = Int32.Parse(_user.FindFirstValue("UserId"));
 
 
-            var workshops = db.Users.First(user => user.ID == id).Workshops.Select(workshop => new WorkshopShortDTO()
+            var workshops = db.Users.First(user => user.ID == id).Workshops.AsEnumerable().Select(workshop => new WorkshopShortDTO()
             {
                 Id = workshop.Id,
                 Coach = workshop.Coach,
@@ -71,7 +90,8 @@ namespace RestNet.Controllers
                 ShortDescription = workshop.ShortDescription,
                 Title = workshop.Title,
                 Date = workshop.Date,
-                IsEnrolled = true
+                IsEnrolled = true,
+                IsEvaluated = workshop.EvaluatedUsers.Any(user => user.ID == id)
             }).ToList();
             if (workshops.Any()) return Ok(workshops);
             else return NotFound();       
@@ -100,7 +120,8 @@ namespace RestNet.Controllers
                     ShortDescription = workshop.ShortDescription,
                     Title = workshop.Title,
                     Date = workshop.Date,
-                    IsEnrolled = currentUser.Workshops.Any(workshop1 => workshop1.Id == workshop.Id)
+                    IsEnrolled = currentUser.Workshops.Any(workshop1 => workshop1.Id == workshop.Id),
+                    IsEvaluated = workshop.EvaluatedUsers.Any(user => user.ID == id)
                 }).ToList();
 
                 return Ok(allShort);
@@ -133,7 +154,9 @@ namespace RestNet.Controllers
                     Title = workshop.Title,
                     Date = workshop.Date,
                     Description = workshop.Description,
-                    IsEnrolled = currentUser.Workshops.Any(workshop1 => workshop1.Id == workshop.Id)
+                    IsEnrolled = currentUser.Workshops.Any(workshop1 => workshop1.Id == workshop.Id),
+                    IsEvaluated = workshop.EvaluatedUsers.Any(user => user.ID == currentUser.ID),
+                    EvaluationUri = workshop.EvaluationUri
                 }).ToList();
                 if (returnWorkshop.Any()) return Ok(returnWorkshop.First());
                 return NotFound();
