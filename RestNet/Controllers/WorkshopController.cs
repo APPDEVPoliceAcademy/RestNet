@@ -91,7 +91,9 @@ namespace RestNet.Controllers
                 Title = workshop.Title,
                 Date = workshop.Date,
                 IsEnrolled = true,
-                IsEvaluated = workshop.EvaluatedUsers.Any(user => user.ID == id)
+                IsEvaluated = workshop.EvaluatedUsers.Any(user => user.ID == id),
+                NumberOfSpots = workshop.NumberOfSpots,
+                TakenSpots = workshop.Users.Count
             }).ToList();
             if (workshops.Any()) return Ok(workshops);
             else return NotFound();       
@@ -121,7 +123,9 @@ namespace RestNet.Controllers
                     Title = workshop.Title,
                     Date = workshop.Date,
                     IsEnrolled = currentUser.Workshops.Any(workshop1 => workshop1.Id == workshop.Id),
-                    IsEvaluated = workshop.EvaluatedUsers.Any(user => user.ID == id)
+                    IsEvaluated = workshop.EvaluatedUsers.Any(user => user.ID == id),
+                    NumberOfSpots = workshop.NumberOfSpots,
+                    TakenSpots = workshop.Users.Count
                 }).ToList();
 
                 return Ok(allShort);
@@ -156,7 +160,9 @@ namespace RestNet.Controllers
                     Description = workshop.Description,
                     IsEnrolled = currentUser.Workshops.Any(workshop1 => workshop1.Id == workshop.Id),
                     IsEvaluated = workshop.EvaluatedUsers.Any(user => user.ID == currentUser.ID),
-                    EvaluationUri = workshop.EvaluationUri
+                    EvaluationUri = workshop.EvaluationUri,
+                    NumberOfSpots = workshop.NumberOfSpots,
+                    TakenSpots = workshop.Users.Count
                 }).ToList();
                 if (returnWorkshop.Any()) return Ok(returnWorkshop.First());
                 return NotFound();

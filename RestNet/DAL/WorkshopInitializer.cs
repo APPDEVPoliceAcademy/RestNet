@@ -45,7 +45,8 @@ namespace RestNet.DAL
                     Date = new DateTime(2014, 06, 13),
                     Place = "Windesheim",
                     Users = null,
-                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh"
+                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh",
+                    NumberOfSpots = 10
                 },
 
                 new Workshop()
@@ -57,7 +58,8 @@ namespace RestNet.DAL
                     Coach = "Tadeusz Sznuk",
                     Place = "on-line",
                     Users = null,
-                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh"
+                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh",
+                    NumberOfSpots = 15
                 },
                 new Workshop()
                 {
@@ -68,7 +70,8 @@ namespace RestNet.DAL
                     Place = "Apeldorn",
                     Date = new DateTime(2018, 06, 21),
                     Users = null,
-                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh"
+                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh",
+                    NumberOfSpots = 20
                 },
 
                 new Workshop()
@@ -80,7 +83,8 @@ namespace RestNet.DAL
                     Date = new DateTime(2018, 06, 10),
                     Place = "Zwolle",
                     Users = null,
-                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh"
+                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh",
+                    NumberOfSpots = 45
                 },
                 new Workshop()
                 {
@@ -92,7 +96,8 @@ namespace RestNet.DAL
                     Coach = "Andrzej Norek",
                     Place = "on-line",
                     Users = null,
-                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh"
+                    EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh",
+                    NumberOfSpots = 90
                 }
             };
             workshops.ForEach(workshop => context.Workshops.Add(workshop));

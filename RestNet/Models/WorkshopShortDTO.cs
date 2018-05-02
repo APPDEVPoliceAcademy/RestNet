@@ -15,5 +15,7 @@ namespace RestNet.Models
         public string Place { get; set; }
         public bool IsEnrolled { get; set; }
         public bool IsEvaluated { get; set; }
+        public int NumberOfSpots { get; set; }
+        public int TakenSpots { get; set; }
     }
 }
