@@ -19,5 +19,6 @@ namespace RestNet.Models
         public string EvaluationUri { get; set; }
         public int NumberOfSpots { get; set; }
         public int TakenSpots { get; set; }
+        public virtual ICollection<Link> Files { get; set; }
     }
 }

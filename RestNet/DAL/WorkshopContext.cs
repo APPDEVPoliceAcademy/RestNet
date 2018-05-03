@@ -17,6 +17,7 @@ namespace RestNet.DAL
 
         public DbSet<User> Users { get; set; }
         public DbSet<Workshop> Workshops { get; set; }
+        public DbSet<Link> Links { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

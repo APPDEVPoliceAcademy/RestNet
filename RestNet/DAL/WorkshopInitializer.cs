@@ -60,6 +60,7 @@ namespace RestNet.DAL
                     Users = null,
                     EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh",
                     NumberOfSpots = 15
+                    
                 },
                 new Workshop()
                 {
@@ -71,7 +72,8 @@ namespace RestNet.DAL
                     Date = new DateTime(2018, 06, 21),
                     Users = null,
                     EvaluationUri = "https://response.questback.com/politieacademiecod/l3suj4uuxh",
-                    NumberOfSpots = 20
+                    NumberOfSpots = 20,
+                    
                 },
 
                 new Workshop()
@@ -125,6 +127,34 @@ namespace RestNet.DAL
                 }
                 throw;
             }
+
+            var selectedWorkshop = context.Workshops.First(workshop => workshop.Title == "Team Building");
+
+            selectedWorkshop.Files.Add(new Link() { Uri = "https://www.pdf-archive.com/2016/05/02/lorem-ipsum/lorem-ipsum.pdf" });
+            selectedWorkshop.Files.Add(new Link() { Uri = "http://szgrabowski.kis.p.lodz.pl/zpo17/lab03.pdf" });
+            selectedWorkshop.Files.Add(new Link() { Uri = "http://szgrabowski.kis.p.lodz.pl/zpo17/lab04.pdf" });
+            try
+            {
+                context.SaveChanges();
+
+            }
+
+            catch (DbEntityValidationException e)
+            {
+                Console.WriteLine("ELKO");
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+
         }
 
     }

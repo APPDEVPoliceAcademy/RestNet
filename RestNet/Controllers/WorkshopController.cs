@@ -149,6 +149,8 @@ namespace RestNet.Controllers
             }
             else
             {
+                var test = db.Workshops.Where(workshop => workshop.Id == id).AsEnumerable().FirstOrDefault();
+
                 var returnWorkshop = db.Workshops.Where(workshop => workshop.Id == id).AsEnumerable().Select(workshop => new WorkshopDTO()
                 {
                     Id = workshop.Id,
@@ -162,7 +164,8 @@ namespace RestNet.Controllers
                     IsEvaluated = workshop.EvaluatedUsers.Any(user => user.ID == currentUser.ID),
                     EvaluationUri = workshop.EvaluationUri,
                     NumberOfSpots = workshop.NumberOfSpots,
-                    TakenSpots = workshop.Users.Count
+                    TakenSpots = workshop.Users.Count,
+                    Files = workshop.Files
                 }).ToList();
                 if (returnWorkshop.Any()) return Ok(returnWorkshop.First());
                 return NotFound();
