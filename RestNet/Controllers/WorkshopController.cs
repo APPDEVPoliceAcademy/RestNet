@@ -173,6 +173,30 @@ namespace RestNet.Controllers
             
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("api/workshops/days")]
+        public IHttpActionResult GetForGivenMonth([FromUri] int month, [FromUri] int year)
+        {
+            var _user = (System.Security.Claims.ClaimsIdentity) User.Identity;
+            var _userid = Int32.Parse(_user.FindFirstValue("UserId"));
+
+            var currentUser = db.Users.FirstOrDefault(user => user.ID == _userid);
+            if (currentUser == null)
+            {
+                return BadRequest("No user");
+            }
+
+            var returnWorkshop = db.Workshops
+                .Where(workshop => workshop.Date.Year == year && workshop.Date.Month == month)
+                .Select(workshop => workshop.Date.Day).ToList();
+
+            if (returnWorkshop.Any()) return Ok(returnWorkshop);
+            return NotFound();
+        }
+    
+
+
         //==============Admin Part ======================//
 
         
