@@ -176,7 +176,7 @@ namespace RestNet.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/workshops/days")]
-        public IHttpActionResult GetForGivenMonth([FromUri] int month, [FromUri] int year)
+        public IHttpActionResult GetForGivenMonth([FromUri] int year, [FromUri] int month)
         {
             var _user = (System.Security.Claims.ClaimsIdentity) User.Identity;
             var _userid = Int32.Parse(_user.FindFirstValue("UserId"));
@@ -194,8 +194,41 @@ namespace RestNet.Controllers
             if (returnWorkshop.Any()) return Ok(returnWorkshop);
             return NotFound();
         }
-    
 
+        [Authorize]
+        [HttpGet]
+        [Route("api/workshops/day")]
+        public IHttpActionResult GetForGivenDay([FromUri] int year, [FromUri] int month, [FromUri] int day)
+        {
+            var _user = (System.Security.Claims.ClaimsIdentity)User.Identity;
+            var id = Int32.Parse(_user.FindFirstValue("UserId"));
+
+            var currentUser = db.Users.FirstOrDefault(user => user.ID == id);
+            if (currentUser == null)
+            {
+                return BadRequest("No user");
+            }
+            else
+            {
+                var allShort = db.Workshops.Where(workshop => workshop.Date.Year == year &&
+                                                              workshop.Date.Month == month &&
+                                                              workshop.Date.Day == day).AsEnumerable().Select(workshop => new WorkshopShortDTO()
+                {
+                    Coach = workshop.Coach,
+                    Id = workshop.Id,
+                    Place = workshop.Place,
+                    ShortDescription = workshop.ShortDescription,
+                    Title = workshop.Title,
+                    Date = workshop.Date,
+                    IsEnrolled = currentUser.Workshops.Any(workshop1 => workshop1.Id == workshop.Id),
+                    IsEvaluated = workshop.EvaluatedUsers.Any(user => user.ID == id),
+                    NumberOfSpots = workshop.NumberOfSpots,
+                    TakenSpots = workshop.Users.Count
+                }).ToList();
+
+                return Ok(allShort);
+            }
+        }
 
         //==============Admin Part ======================//
 
