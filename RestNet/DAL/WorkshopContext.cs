@@ -12,7 +12,7 @@ namespace RestNet.DAL
     {
         public WorkshopContext() : base("WorkshopContext")
         {
-
+            Database.SetInitializer<WorkshopContext>(new CreateDatabaseIfNotExists<WorkshopContext>());
         }
 
         public DbSet<User> Users { get; set; }
@@ -21,7 +21,17 @@ namespace RestNet.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            modelBuilder.Entity<User>().HasMany<Workshop>(user => user.Workshops).WithMany(workshop => workshop.Users)
+                .Map(configuration =>
+                {
+                    configuration.MapLeftKey("UserID");
+                    configuration.MapRightKey("WorkshopID");
+                    configuration.ToTable("UserWorkshop");
+                });
+
         }
     }
 }

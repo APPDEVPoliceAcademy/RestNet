@@ -16,8 +16,13 @@ namespace RestNet.Models
         public DateTime Date { get; set; }
         public int NumberOfSpots { get; set; }
         public virtual ICollection<User> Users { get; set; } = new List<User>();
-        public virtual ICollection<User> EvaluatedUsers { get; set; } = new List<User>();
+        public virtual ICollection<User> EvaluatedUsers { get; set; }
         public virtual ICollection<Link> Files { get; set; } = new List<Link>();
         public string EvaluationUri { get; set; }
+
+        public Workshop()
+        {
+            Users = new List<User>();
+        }
     }
 }

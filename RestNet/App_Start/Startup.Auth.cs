@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Owin;
     using Microsoft.Owin.Security.OAuth;
     using Owin;
@@ -28,5 +29,7 @@ namespace RestNet
         {
             app.UseOAuthBearerTokens(OAuthOptions);
         }
+
+       
     }
 }

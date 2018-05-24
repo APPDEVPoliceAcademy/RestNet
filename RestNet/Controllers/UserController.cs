@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -14,6 +15,7 @@ using Newtonsoft.Json.Linq;
 using RestNet.DAL;
 using RestNet.Models;
 using RestNet.Service;
+using Swashbuckle.Swagger.Annotations;
 
 namespace RestNet.Controllers
 {
@@ -22,9 +24,21 @@ namespace RestNet.Controllers
         private WorkshopContext db = new WorkshopContext();
 
         private SHA256 hasher = new SHA256Managed();
+
+        /// <summary>
+        /// Add user to database
+        /// </summary>
+        /// <remarks>
+        ///
+        /// </remarks>
+        /// <param name="credentials">User credentials</param>
+        /// <returns>Token information for newly created user</returns>
+        /// <response code="200">Token information for newly created user</response>
+        /// <response code="400">Login is already taken</response>
         [AllowAnonymous]
         [HttpPost]
         [Route("api/user/add")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(TokenInfo))]
         public IHttpActionResult createUser([FromBody] UserCredentials credentials)
         {
             if (db.Users.Count(user => user.Login == credentials.Login) > 0)
@@ -80,11 +94,19 @@ namespace RestNet.Controllers
             }
         }
 
-        
-
+        /// <summary>
+        /// Get information about user
+        /// </summary>
+        /// <remarks>
+        /// Need to be authenticated. User is taken from bearer token
+        /// </remarks>
+        /// <returns>Information about user</returns>
+        /// <response code="200">Data transfer object for user</response>
+        /// <response code="400">User not found</response>
         [HttpGet]
         [Route("api/user/me")]
         [Authorize()]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserDTO))]
         public IHttpActionResult GetMe()
         {
             var _user = (System.Security.Claims.ClaimsIdentity) User.Identity;
@@ -106,6 +128,17 @@ namespace RestNet.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Update information about user
+        /// </summary>
+        /// <remarks>
+        /// Need to be authenticated. User is taken from bearer token. All fields will be overriden.
+        /// </remarks>
+        /// <param name="userData">Newly provided user data</param>
+        /// <returns>Nothing</returns>
+        /// <response code="200">Data sucesfully updated</response>
+        /// <response code="400">User not found</response>
         [HttpPost]
         [Route("api/user/me")]
         [Authorize()]
