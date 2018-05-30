@@ -35,7 +35,7 @@ namespace RestNet.Controllers
         [Authorize]
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("api/workshops/enroll/{id}")]
-        public IHttpActionResult AddSingleUser([FromUri] int id)
+        public IHttpActionResult EnrollSingleUser([FromUri] int id)
         {
             
             var user = (System.Security.Claims.ClaimsIdentity)User.Identity;
@@ -67,7 +67,7 @@ namespace RestNet.Controllers
         [Authorize]
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/workshops/evaluate/{id}")]
-        public IHttpActionResult EvaluteSingleUser([FromUri] int id)
+        public IHttpActionResult EvaluteWorkshopBySingleUser([FromUri] int id)
         {
             var user = (System.Security.Claims.ClaimsIdentity)User.Identity;
             var userId = Int32.Parse(user.FindFirstValue("UserId"));
@@ -97,7 +97,7 @@ namespace RestNet.Controllers
         [Authorize]
         [System.Web.Http.HttpDelete]
         [System.Web.Http.Route("api/workshops/disenroll/{id}")]
-        public IHttpActionResult RemoveSingleUser([FromUri] int id)
+        public IHttpActionResult DisenrollSingleUser([FromUri] int id)
         {
             var user = (System.Security.Claims.ClaimsIdentity)User.Identity;
             var userId = Int32.Parse(user.FindFirstValue("UserId"));
@@ -110,7 +110,7 @@ namespace RestNet.Controllers
             userObject.Workshops.Remove(selectedWorkshop);
 
             var updated = db.SaveChanges();
-            if (updated == 0) return BadRequest("Couldn't save new info to database");
+            if (updated == 0) return BadRequest("Informatie kon niet worden opgeslagen");
             return Ok();
         }
 
@@ -129,7 +129,7 @@ namespace RestNet.Controllers
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/workshops/me")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<WorkshopShortDTO>))]
-        public IHttpActionResult GetForSingleUser()
+        public IHttpActionResult GetEnrolledWorkshopsForSingleUser()
         {
             var _user = (System.Security.Claims.ClaimsIdentity)User.Identity;
             var id = Int32.Parse(_user.FindFirstValue("UserId"));
@@ -137,7 +137,7 @@ namespace RestNet.Controllers
 
             if (currentUser == null)
             {
-                return BadRequest("No user");
+                return BadRequest("Geen gebruiker");
             }
 
             var workshops = currentUser.Workshops.AsEnumerable().Select(workshop => new WorkshopShortDTO()
@@ -173,7 +173,7 @@ namespace RestNet.Controllers
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/workshops/all")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<WorkshopShortDTO>))]
-        public IHttpActionResult GetAll()
+        public IHttpActionResult GetAllWorkshops()
         {
             var _user = (System.Security.Claims.ClaimsIdentity)User.Identity;
             var id = Int32.Parse(_user.FindFirstValue("UserId"));
@@ -182,7 +182,7 @@ namespace RestNet.Controllers
 
             if (currentUser == null)
             {
-                return BadRequest("No user");
+                return BadRequest("Geen gebruiker");
             }
             else
             {
@@ -224,7 +224,7 @@ namespace RestNet.Controllers
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/workshops/{id}")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(WorkshopShortDTO))]
-        public IHttpActionResult GetGivenWorkshop([FromUri] int id)
+        public IHttpActionResult GetSelectedWorkshop([FromUri] int id)
         {
             var _user = (System.Security.Claims.ClaimsIdentity)User.Identity;
             var _userid = Int32.Parse(_user.FindFirstValue("UserId"));
@@ -232,7 +232,7 @@ namespace RestNet.Controllers
             var currentUser = db.Users.FirstOrDefault(user => user.ID == _userid);
             if (currentUser == null)
             {
-                return BadRequest("No user");
+                return BadRequest("Geen gebruiker");
             }
             else
             {
@@ -278,7 +278,7 @@ namespace RestNet.Controllers
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/workshops/days")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<int>))]
-        public IHttpActionResult GetForGivenMonth([FromUri] int year, [FromUri] int month)
+        public IHttpActionResult GetWorkshopsForGivenMonth([FromUri] int year, [FromUri] int month)
         {
             var _user = (System.Security.Claims.ClaimsIdentity) User.Identity;
             var _userid = Int32.Parse(_user.FindFirstValue("UserId"));
@@ -286,7 +286,7 @@ namespace RestNet.Controllers
             var currentUser = db.Users.FirstOrDefault(user => user.ID == _userid);
             if (currentUser == null)
             {
-                return BadRequest("No user");
+                return BadRequest("Geen gebruiker");
             }
 
             var returnWorkshop = db.Workshops
@@ -316,7 +316,7 @@ namespace RestNet.Controllers
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/workshops/day")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<WorkshopShortDTO>))]
-        public IHttpActionResult GetForGivenDay([FromUri] int year, [FromUri] int month, [FromUri] int day)
+        public IHttpActionResult GetWorkshopsForGivenDay([FromUri] int year, [FromUri] int month, [FromUri] int day)
         {
             var _user = (System.Security.Claims.ClaimsIdentity)User.Identity;
             var id = Int32.Parse(_user.FindFirstValue("UserId"));
@@ -324,7 +324,7 @@ namespace RestNet.Controllers
             var currentUser = db.Users.FirstOrDefault(user => user.ID == id);
             if (currentUser == null)
             {
-                return BadRequest("No user");
+                return BadRequest("Geen gebruiker");
             }
             else
             {
@@ -362,7 +362,7 @@ namespace RestNet.Controllers
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/workshops/nonevaluated")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(int))]
-        public IHttpActionResult GetNumberOfNonEvaluated()
+        public IHttpActionResult GetNumberOfNotEvaluatedWorkshops()
         {
             var _user = (System.Security.Claims.ClaimsIdentity)User.Identity;
             var id = Int32.Parse(_user.FindFirstValue("UserId"));
@@ -370,7 +370,7 @@ namespace RestNet.Controllers
             var currentUser = db.Users.FirstOrDefault(user => user.ID == id);
             if (currentUser == null)
             {
-                return BadRequest("No user");
+                return BadRequest("Geen gebruiker");
             }
             else
             {
@@ -381,7 +381,7 @@ namespace RestNet.Controllers
         }
 
         //==============Admin Part ======================//
-
+        /*
         
        [Authorize(Roles = "admin")]
        [System.Web.Http.HttpGet]
@@ -488,7 +488,7 @@ namespace RestNet.Controllers
             }
         }
 
-
+    */
     }
 
 }

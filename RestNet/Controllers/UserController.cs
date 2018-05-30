@@ -39,11 +39,11 @@ namespace RestNet.Controllers
         [HttpPost]
         [Route("api/user/add")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(TokenInfo))]
-        public IHttpActionResult createUser([FromBody] UserCredentials credentials)
+        public IHttpActionResult CreateUser([FromBody] UserCredentials credentials)
         {
             if (db.Users.Count(user => user.Login == credentials.Login) > 0)
             {
-                return BadRequest("Login already taken");
+                return BadRequest("Login bestaat al");
             }
             else
             {
@@ -107,14 +107,14 @@ namespace RestNet.Controllers
         [Route("api/user/me")]
         [Authorize()]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserDTO))]
-        public IHttpActionResult GetMe()
+        public IHttpActionResult GetUserInformation()
         {
             var _user = (System.Security.Claims.ClaimsIdentity) User.Identity;
             var id = Int32.Parse(_user.FindFirstValue("UserId"));
             var currentUser = db.Users.FirstOrDefault(user => user.ID == id);
             if (currentUser == null)
             {
-                return BadRequest("No user");
+                return BadRequest("Geen gebruiker");
             }
             else
             {
@@ -142,14 +142,14 @@ namespace RestNet.Controllers
         [HttpPost]
         [Route("api/user/me")]
         [Authorize()]
-        public IHttpActionResult UpdateMe([FromBody] UserDTO userData)
+        public IHttpActionResult UpdateUserInformation([FromBody] UserDTO userData)
         {
             var _user = (System.Security.Claims.ClaimsIdentity)User.Identity;
             var id = Int32.Parse(_user.FindFirstValue("UserId"));
             var currentUser = db.Users.FirstOrDefault(user => user.ID == id);
             if (currentUser == null)
             {
-                return BadRequest("No user");
+                return BadRequest("Geen gebruiker");
             }
             else
             {
@@ -158,7 +158,7 @@ namespace RestNet.Controllers
                 currentUser.Unit = userData.Unit;
                 currentUser.Birthday = userData.Birthday;
                 var updated = db.SaveChanges();
-                if (updated == 0) return BadRequest("Couldn't save new info to database");
+                if (updated == 0) return BadRequest("Informatie kon niet worden opgeslagen");
                 else return Ok();
             }
         }

@@ -41,7 +41,7 @@ namespace RestNet.DAL
                 {
                     Title = "PR for beginners",
                     Description = loremipsum,
-                    Coach = "Saskia Roetgerink",
+                    Coach = "Paul Driessen",
                     Date = new DateTime(2014, 06, 13),
                     Place = "Windesheim",
                     Users = null,

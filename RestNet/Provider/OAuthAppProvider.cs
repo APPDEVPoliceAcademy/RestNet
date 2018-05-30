@@ -35,7 +35,7 @@ namespace RestNet.Provider
                 }
                 else
                 {
-                    context.SetError("Bad Username or Password", "Error");
+                    context.SetError("Verkeerde gebruikersnaam of wachtwoord", "Error");
                 }
             });
         }
